@@ -3,20 +3,20 @@ using CleanStore.Application.Features.Products.Commands;
 using CleanStore.Domain.Entities;
 using MediatR;
 
-namespace CleanStore.Application.Features.Products.Handlers;
+namespace CleanStore.Application.Features.Products.Commands;
 
-public class DeleteProductCommandHandler
-    : IRequestHandler<DeleteProductCommand, bool>
+public class UpdateProductCommandHandler
+    : IRequestHandler<UpdateProductCommand, bool>
 {
     private readonly IRepository<Product> _repository;
 
-    public DeleteProductCommandHandler(IRepository<Product> repository)
+    public UpdateProductCommandHandler(IRepository<Product> repository)
     {
         _repository = repository;
     }
 
     public async Task<bool> Handle(
-        DeleteProductCommand request,
+        UpdateProductCommand request,
         CancellationToken cancellationToken)
     {
         var product = await _repository.GetByIdAsync(request.Id);
@@ -26,7 +26,12 @@ public class DeleteProductCommandHandler
             return false;
         }
 
-        await _repository.DeleteAsync(product);
+        product.Name = request.Name;
+        product.Description = request.Description;
+        product.Price = request.Price;
+        product.CategoryId = request.CategoryId;
+
+        await _repository.UpdateAsync(product);
 
         return true;
     }
