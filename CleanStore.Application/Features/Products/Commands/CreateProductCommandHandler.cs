@@ -3,7 +3,7 @@ using CleanStore.Application.Features.Products.Commands;
 using CleanStore.Domain.Entities;
 using MediatR;
 
-namespace CleanStore.Application.Features.Products.Handlers;
+namespace CleanStore.Application.Features.Products.Commands;
 
 public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand, Product>
 {
